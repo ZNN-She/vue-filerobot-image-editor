@@ -1,13 +1,16 @@
 {
-  "name": "@geosmart/vue-filerobot-image-editor",
+  "name": "vue-filerobot-image-editor",
   "description": "Filerobot-image-editor from vuejs",
   "version": "4.2.0",
-  "author": "Nestor Koueya <koueya@gmail.com>",
+  "author": "geosmart@hotmail.com",
   "main": "dist/vue-filerobot-image-editor.umd.js",
   "module": "dist/vue-filerobot-image-editor.esm.js",
   "unpkg": "dist/vue-filerobot-image-editor.min.js",
   "browser": {
     "./sfc": "src/index.js"
+  },
+  "publishConfig": {
+    "@geosmart:registry": "https://npm.pkg.github.com"
   },
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -66,14 +69,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/koueya/vue-filerobot-image-editor.git"
+    "url": "git+https://github.com/geosmart/vue-filerobot-image-editor.git"
   },
   "keywords": [
     "Vue",
     "Filerobot-image"
   ],
   "bugs": {
-    "url": "https://github.com/koueya/vue-filerobot-image-editor/issues"
+    "url": "https://github.com/geosmart/vue-filerobot-image-editor/issues"
   },
-  "homepage": "https://github.com/koueya/vue-filerobot-image-editor#readme"
+  "homepage": "https://github.com/geosmart/vue-filerobot-image-editor#readme"
 }
