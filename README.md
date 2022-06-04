@@ -6,14 +6,15 @@
 
 - [Vue.js](http://vuejs.org/) >= 2
 
-
 ## Install
 
 ### CDN
 
 ```html
+
 <script src="https://unpkg.com/@rotsen/vue-filerobot-image-editor"></script>
 ```
+
 ### NPM
 
 ```
@@ -22,76 +23,101 @@ or
 $ yarn @rotsen/vue-filerobot-image-editor
 
 ```
+
 # Filerobot Image Editor
+
 ### Component
 
 Then in your component:
-```vue
-<template>
-  <div>
-    <img
-      v-if="!openEditor"
-      width="300"
-      :src="src"
-      @click="openEditor = true"
-      alt="example image"
-    />
-    <button  @click="openEditor = true"> edit</button>
-    <VueFilerobotImageEditor
-      v-if="openEditor"
-      :config="config"
-      :src="src"
-      @complete="onComplete"
-      @beforeComplete="onBeforeComplete"
-      @close="onClose"
-      @error="onError"
-    />
-</template>
 
+```vue
+
+<template>
+    <div id="app">
+        <img alt="Vue logo"
+             src="./assets/logo.png"
+             style="width:64px;height:64px"/>
+        <img v-if="!openEditor" :src="url" @click="handleOpenEditor"/>
+        <FilerobotImageEditor
+            v-if="openEditor"
+            :src="url"
+            @modify="handleModify"
+            @close="handleClose"
+            @save="handleSave"
+            @error="handleError"
+            @beforeSave="onBeforeSave"
+        />
+    </div>
+</template>
 <script>
-import VueFilerobotImageEditor from "@rotsen/vue-filerobot-image-editor";
+/* eslint-disable */
+import FilerobotImageEditor from "./index";
 
 export default {
-  components: { VueFilerobotImageEditor },
-  data() {
-    return {
-      openEditor: false,
-      config: {
-        tools: ['adjust', 'effects', 'filters', 'rotate', 'crop', 'resize', 'watermark', 'shapes', 'image', 'text'],
-        finishButtonLabel:'Save',
-      }
-       
-      src: "https://scaleflex.airstore.io/demo/stephen-walker-unsplash.jpg",
-      colorScheme: 'light' //  'dark'|'light'
-    };
-  },
-  methods: {
-   onComplete(url, file) {
-      console.log("url" + url);
+    name: "App",
+    components: {
+        FilerobotImageEditor,
     },
-    onBeforeComplete(element) {
-      if (element && element.canvas) {
-        this.src = element.canvas.toDataURL();
-      }
+    data() {
+        return {
+            url:
+                "https://www.debian.org/Pics/debian-logo-1024x576.png",
+            openEditor: false,
+        };
     },
-    onClose(status) {
-      console.log("close" + JSON.stringify(status, null, 3));
-      this.openEditor = false;
+    mounted() {
     },
-     onError(error) {
-      console.log(" error " + error);
+    methods: {
+        handleModify(imgData) {
+            console.info('imgData', imgData)
+        },
+        handleOpenEditor() {
+            this.openEditor = true;
+        },
+        handleCloseEditor() {
+            this.openEditor = false;
+        },
+        handleClose(status) {
+            console.error('Close' + status)
+            this.handleCloseEditor();
+        },
+        onBeforeSave(imageFileInfo) {
+            console.error('imageFileInfo', imageFileInfo)
+        },
+        handleSave(editedImageObject, designState) {
+            console.log("editedImageObject", editedImageObject)
+            console.log("designState", designState)
+            this.url = editedImageObject.imageCanvas.toDataURL();
+            console.log('canvas data url', this.url)
+            console.log('watermark', designState.annotations.watermark)
+            //this.handleCloseEditor();
+        },
+        handleError(error) {
+            this.handleCloseEditor();
+        },
     },
-    
-
-  }
 };
 </script>
+
+<style>
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+}
+</style>
+
 ```
+
 ### Props
 
 | Name                    | Type       | Description                                                                  |
 | ----------------------- | ---------- | ---------------------------------------------------------------------------- |
-| `config`                | `Object`   | All configuration of FilerobotImage Editor. **Default: {}**                               |
+| `config`                | `Object`   | All configuration of FilerobotImage Editor. **Default:
+{}**                               |
 | `src         `          | `String`   | Image url to edit . **Required** |
 
 ### Events
@@ -100,21 +126,20 @@ export default {
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `close`               | Fired when the editor is close                                                           |
 | `error`               | Fired when error occurs                                                                   |
-| `beforeComplete`      | Event fired when click to Save of Download                                                |
-| `complete`   | Event fired when a dialog definition at the end of beforeComplete                                   |
-
+| `beforeSave`          | Event fired when click to Save of Download                                                |
+| `save`                | Event fired when a dialog definition at the end of beforeSave                             |
+| `modify`             | Event fired after any operation/transformation is applied on the image (ex. Add/change filter, resize the image...etc.). |
 
 ### Docs
+
 ```
 Full docs at  [filerobot-image-editor](https://github.com/scaleflex/filerobot-image-editor)
 
 ```
 
-
 ## Build Setup
 
 You can use [vue-cli](https://github.com/vuejs/vue-cli)  or [other vue templates](https://github.com/vuejs-templates)
-
 
 ## Created By
 
@@ -122,8 +147,6 @@ You can use [vue-cli](https://github.com/vuejs/vue-cli)  or [other vue templates
 
 Thanks to [contributers](./CONTRIBUTING.md)
 
-
-
 ## License
 
-MIT 
+MIT

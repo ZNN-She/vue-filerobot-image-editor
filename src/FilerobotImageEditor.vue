@@ -1,8 +1,8 @@
 <template>
-  <div />
+  <div id="editor_container"/>
 </template>
 <script>
-import "./assets/lib/filerobot-image-editor.min.js";
+import FilerobotImageEditor from "./assets/lib/filerobot-image-editor.min.js";
 
 export default {
   props: {
@@ -19,15 +19,19 @@ export default {
     this.init();
   },
   methods: {
-    init() {
+    init: function () {
       // config parameters
-      const options = this.config;
-      options.finishButtonLabel = this.config.finishButtonLabel || "save";
+      const config = this.config;
+      config.finishButtonLabel = this.config.finishButtonLabel || "save";
+      config.source = this.src;
 
       // Registering this.callbacks
       this.callbacks = {};
-      console.log("open");
       const vm = this;
+      // @modify
+      this.callbacks.onModify = (imageDesignState) => {
+        vm.$emit("modify", imageDesignState);
+      };
       // @error
       this.callbacks.onError = (error) => {
         vm.$emit("error", error);
@@ -36,24 +40,20 @@ export default {
       this.callbacks.onClose = (status) => {
         vm.$emit("close", status);
       };
-      // @beforeComplete
-      this.callbacks.onBeforeComplete = function (element) {
-        vm.$emit("beforeComplete", element);
-        console.error(element.canvas.toDataURL());
+      // @beforeSave
+      this.callbacks.onBeforeSave = function (imageFileInfo) {
+        vm.$emit("beforeSave", imageFileInfo);
         return false;
       };
-      // @complete
-      this.callbacks.onComplete = (url, file) => {
-        this.$emit("complete", url, file);
+      // @save
+      this.callbacks.onSave = (editedImageObject, designState) => {
+        this.$emit("save", editedImageObject, designState);
       };
 
-      //onComplete
-      this.imageEditor = new window.FilerobotImageEditor(
-        options,
-        this.callbacks
-      );
-      this.imageEditor.open(this.src);
-      // console.log("open");
+      //render
+      const container = document.getElementById("editor_container");
+      this.imageEditor = new FilerobotImageEditor(container, config);
+      this.imageEditor.render(this.callbacks);
     },
   },
   destroy() {

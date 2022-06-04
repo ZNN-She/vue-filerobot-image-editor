@@ -1,7 +1,7 @@
 {
-  "name": "@rotsen/vue-filerobot-image-editor",
+  "name": "@geosmart/vue-filerobot-image-editor",
   "description": "Filerobot-image-editor from vuejs",
-  "version": "0.2.0",
+  "version": "4.2.0",
   "author": "Nestor Koueya <koueya@gmail.com>",
   "main": "dist/vue-filerobot-image-editor.umd.js",
   "module": "dist/vue-filerobot-image-editor.esm.js",
@@ -41,6 +41,7 @@
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^21.0.0",
     "vue-eslint-parser": "7.6.0",
+    "vue": "2.6.10",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {

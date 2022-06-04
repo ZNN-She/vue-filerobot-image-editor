@@ -1,14 +1,17 @@
 {
-  "ignorePatterns": ["filerobot-image-editor.min.js"],
+  "ignorePatterns": [
+    "filerobot-image-editor.min.js",
+    "*.vue"
+  ],
   "extends": [
     "prettier",
     "plugin:prettier/recommended",
     "plugin:vue/recommended",
     "plugin:vue/base"
   ],
-
-  "plugins": ["prettier"],
-
+  "plugins": [
+    "prettier"
+  ],
   "rules": {
     "prettier/prettier": [
       "error",
@@ -20,8 +23,8 @@
   "parserOptions": {
     "parser": "babel-eslint",
     "ecmaFeatures": {
-      "jsx": true,
-      "modules": true
+      "jsx": false,
+      "modules": false
     }
   }
 }

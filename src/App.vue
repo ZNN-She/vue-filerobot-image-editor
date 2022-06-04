@@ -1,21 +1,24 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <img v-if="!openEditor" :src="url" @click="handleOpenEditor" />
+    <img alt="Vue logo"
+         src="./assets/logo.png"
+         style="width:64px;height:64px"/>
+    <img v-if="!openEditor" :src="url" @click="handleOpenEditor"/>
     <FilerobotImageEditor
       v-if="openEditor"
       :src="url"
+      @modify="handleModify"
       @close="handleClose"
-      @cmplete="handleComplete"
+      @save="handleSave"
       @error="handleError"
-      @beforeComplete="onBeforeComplete"
+      @beforeSave="onBeforeSave"
     />
   </div>
 </template>
-
 <script>
 /* eslint-disable */
 import FilerobotImageEditor from "./index";
+
 export default {
   name: "App",
   components: {
@@ -24,31 +27,36 @@ export default {
   data() {
     return {
       url:
-        "https://my-ykmail-bucket.s3.eu-west-3.amazonaws.com/nestorgrass-1107003_150.jpg",
+        "https://www.debian.org/Pics/debian-logo-1024x576.png",
       openEditor: false,
     };
   },
-  mounted() {},
+  mounted() {
+  },
   methods: {
+    handleModify(imgData) {
+      console.info('imgData', imgData)
+    },
     handleOpenEditor() {
       this.openEditor = true;
     },
-     handleCloseEditor() {
+    handleCloseEditor() {
       this.openEditor = false;
     },
     handleClose(status) {
-      console.error('Close'+status)
+      console.error('Close' + status)
       this.handleCloseEditor();
     },
-    onBeforeComplete(element){
-      this.url=element.canvas.toDataURL();
-      // console.error(element.canvas.toDataURL())
+    onBeforeSave(imageFileInfo) {
+      console.error('imageFileInfo', imageFileInfo)
     },
-    handleComplete(element, file) {
-      // console.log(url )
-      this.url=element.canvas.toDataURL();
-      
-      this.handleCloseEditor();
+    handleSave(editedImageObject, designState) {
+      console.log("editedImageObject", editedImageObject)
+      console.log("designState", designState)
+      this.url = editedImageObject.imageCanvas.toDataURL();
+      console.log('canvas data url', this.url)
+      console.log('watermark', designState.annotations.watermark)
+      //this.handleCloseEditor();
     },
     handleError(error) {
       this.handleCloseEditor();
